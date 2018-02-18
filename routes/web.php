@@ -10,40 +10,57 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+$router->group(['middleware' => 'cors.options'], function () use ($router) {
+    $router->options('{all:.*}', function () {
+        return response('');
+    });
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+    $router->get('/', function () use ($router) {
+        return $router->app->version();
+    });
+
+    /**
+     * Shooter
+     */
+    $router->get('/shooter', 'ShooterController@all');
+    $router->get('/shooter/{id}', 'ShooterController@get');
+    $router->post('/shooter', 'ShooterController@add');
+    $router->put('/shooter/{id}', 'ShooterController@put');
+    $router->delete('/shooter/{id}', 'ShooterController@remove');
+
+    /**
+     * Club
+     */
+    $router->get('/club', 'ClubController@all');
+    $router->get('/club/{id}', 'ClubController@get');
+    $router->post('/club', 'ClubController@add');
+    $router->put('/club/{id}', 'ClubController@put');
+    $router->delete('/club/{id}', 'ClubController@remove');
+
+    /**
+     * Event
+     */
+    $router->get('/event', 'EventController@all');
+    $router->get('/event/{id}', 'EventController@get');
+    $router->post('/event', 'EventController@add');
+    $router->put('/event/{id}', 'EventController@put');
+    $router->delete('/event/{id}', 'EventController@remove');
+
+    /**
+     * Result
+     */
+    $router->get('/result', 'ResultController@all');
+    $router->get('/result/{id}', 'ResultController@get');
+    $router->post('/result', 'ResultController@add');
+    $router->put('/result/{id}', 'ResultController@put');
+    $router->delete('/result/{id}', 'ResultController@remove');
+
+    /**
+     * Routes for resource member
+     */
+    $router->get('member', 'MemberController@all');
+    $router->get('member/{id}', 'MemberController@get');
+    $router->post('member', 'MemberController@add');
+    $router->put('member/{id}', 'MemberController@put');
+    $router->delete('member/{id}', 'MemberController@remove');
 });
-
-/**
- * Shooter
- */
-$router->get('/shooter/{id}', 'ShooterController@get');
-$router->post('/shooter', 'ShooterController@add');
-$router->put('/shooter/{id}', 'ShooterController@update');
-$router->delete('/shooter/{id}', 'ShooterController@delete');
-
-/**
- * Club
- */
-$router->get('/club', 'ClubController@getAll');
-$router->get('/club/{id}', 'ClubController@getClub');
-$router->post('/club', 'ClubController@createClub');
-$router->put('/club/{id}', 'ClubController@updateClub');
-$router->delete('/club/{id}', 'ClubController@deleteClub');
-
-/**
- * Event
- */
-$router->get('/event/{id}', 'EventController@get');
-$router->post('/event', 'EventController@add');
-$router->put('/event/{id}', 'EventController@update');
-$router->delete('/event/{id}', 'EventController@delete');
-
-/**
- * Result
- */
-$router->get('/result/{id}', 'ResultController@get');
-$router->post('/result', 'ResultController@add');
-$router->put('/result/{id}', 'ResultController@update');
-$router->delete('/result/{id}', 'ResultController@delete');

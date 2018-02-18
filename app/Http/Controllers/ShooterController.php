@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClubModel;
+use App\Models\ShooterModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
-class ClubController extends Controller
+class ShooterController extends Controller
 {
 
     public function all(Request $request)
     {
-        return response()->json(['status' => true, 'data' => ClubModel::all()]);
+        return response()->json(['status' => true, 'data' => ShooterModel::all()]);
     }
 
     /**
@@ -30,11 +30,11 @@ class ClubController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $club = ClubModel::find($id);
-        if ($club) {
-            return response()->json(['status' => true, 'data' => $club]);
+        $shooter = ShooterModel::find($id);
+        if ($shooter) {
+            return response()->json(['status' => true, 'data' => $shooter]);
         }
-        return response()->json(['status' => false, 'msg' => 'Club not found'], Response::HTTP_NOT_FOUND);
+        return response()->json(['status' => false, 'msg' => 'Shooter not found'], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -44,9 +44,9 @@ class ClubController extends Controller
      */
     public function add(Request $request)
     {
-        $this->validate($request, ClubModel::$rules);
-        $club = ClubModel::create($request->all());
-        return response()->json(['status' => true, 'data' => $club], Response::HTTP_CREATED);
+        $this->validate($request, ShooterModel::$rules);
+        $shooter = ShooterModel::create($request->all());
+        return response()->json(['status' => true, 'data' => $shooter], Response::HTTP_CREATED);
     }
 
     public function put(Request $request, $id)
@@ -58,13 +58,13 @@ class ClubController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $this->validate($request, ClubModel::$rules);
-        $club = ClubModel::find($id);
-        if ($club) {
-            $club->fill($request->all());
-            return response()->json(['status' => true, 'data' => $club]);
+        $this->validate($request, ShooterModel::$rules);
+        $shooter = ShooterModel::find($id);
+        if ($shooter) {
+            $shooter->fill($request->all());
+            return response()->json(['status' => true, 'data' => $shooter]);
         }
-        return response()->json(['status' => false, 'msg' => 'Club not found'], 404);
+        return response()->json(['status' => false, 'msg' => 'Shooter not found'], 404);
     }
 
     public function remove($id)
@@ -76,11 +76,11 @@ class ClubController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $club = ClubModel::find($id);
-        if ($club) {
-            $club->delete();
+        $shooter = ShooterModel::find($id);
+        if ($shooter) {
+            $shooter->delete();
             return response()->json(['status' => true]);
         }
-        return response()->json(['status' => false, 'msg' => 'Club not found'], 404);
+        return response()->json(['status' => false, 'msg' => 'Shooter not found'], 404);
     }
 }
