@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MemberModel;
 use App\Models\ShooterModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class MemberController extends Controller
 
     public function all(Request $request)
     {
-        return response()->json(['status' => true, 'data' => ShooterModel::all()]);
+        $count = MemberModel::count();
+        return response()->json(['status' => true, 'data' => MemberModel::all(), 'count' => $count]);
     }
 
     /**
@@ -30,11 +32,11 @@ class MemberController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $shooter = ShooterModel::find($id);
-        if ($shooter) {
-            return response()->json(['status' => true, 'data' => $shooter]);
+        $member = MemberModel::find($id);
+        if ($member) {
+            return response()->json(['status' => true, 'data' => $member]);
         }
-        return response()->json(['status' => false, 'msg' => 'Shooter not found'], Response::HTTP_NOT_FOUND);
+        return response()->json(['status' => false, 'msg' => 'Member not found'], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -44,9 +46,9 @@ class MemberController extends Controller
      */
     public function add(Request $request)
     {
-        $this->validate($request, ShooterModel::$rules);
-        $shooter = ShooterModel::create($request->all());
-        return response()->json(['status' => true, 'data' => $shooter], Response::HTTP_CREATED);
+        $this->validate($request, MemberModel::$rules);
+        $member = MemberModel::create($request->all());
+        return response()->json(['status' => true, 'data' => $member], Response::HTTP_CREATED);
     }
 
     public function put(Request $request, $id)
@@ -59,12 +61,12 @@ class MemberController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $this->validate($request, ShooterModel::$rules);
-        $shooter = ShooterModel::find($id);
-        if ($shooter) {
-            $shooter->fill($request->all());
-            return response()->json(['status' => true, 'data' => $shooter]);
+        $member = MemberModel::find($id);
+        if ($member) {
+            $member->fill($request->all())->save();
+            return response()->json(['status' => true, 'data' => $member]);
         }
-        return response()->json(['status' => false, 'msg' => 'Shooter not found'], 404);
+        return response()->json(['status' => false, 'msg' => 'Member not found'], 404);
     }
 
     public function remove($id)
@@ -76,11 +78,11 @@ class MemberController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $shooter = ShooterModel::find($id);
-        if ($shooter) {
-            $shooter->delete();
+        $member = MemberModel::find($id);
+        if ($member) {
+            $member->delete();
             return response()->json(['status' => true]);
         }
-        return response()->json(['status' => false, 'msg' => 'Shooter not found'], 404);
+        return response()->json(['status' => false, 'msg' => 'Member not found'], 404);
     }
 }

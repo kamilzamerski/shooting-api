@@ -8,13 +8,27 @@ class MemberModel extends Model
 {
     protected $table = 'member';
 
-    protected $fillable = ['name', 'surname', 'pesel', 'date_of_join'];
+    protected $fillable = [
+        'name',
+        'surname',
+        'date_of_join',
+        'pesel',
+        'address_street',
+        'address_street_no',
+        'address_apartment_no',
+        'post_code',
+        'city',
+        'shooting_license',
+        'email',
+        'phone',
+        'active_to'
+    ];
 
     public static $rules = [
         'name' => 'required|max:50',
         'surname' => 'required|max:50',
         'date_of_join' => 'required|date|dateFormat:Y-m-d',
-        'pesel' => 'required|digits|min:11|max:11',
+        'pesel' => 'required|digits:11',
         'address_street' => 'nullable|max:50',
         'address_street_no' => 'nullable|max:10',
         'address_apartment_no' => 'nullable|max:10',

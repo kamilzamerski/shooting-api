@@ -10,10 +10,10 @@ class CreateShooterTable extends Migration
     {
         Schema::create('shooter', function(Blueprint $table) {
             $table->increments('id');
+            $table->timestamps();
             $table->string('name', 50);
             $table->integer('club_id')->nullable()->unsigned();
             $table->string('license_no', 30)->nullable()->unique();
-            $table->timestamps();
 
             $table->foreign('club_id')->references('id')->on('club');
 

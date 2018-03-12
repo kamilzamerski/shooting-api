@@ -10,10 +10,10 @@ class CreateEventTable extends Migration
     {
         Schema::create('event', function(Blueprint $table) {
             $table->increments('id');
+            $table->timestamps();
             $table->string('name', 255);
             $table->date('date');
             $table->integer('club_id')->unsigned();
-            $table->timestamps();
 
             $table->foreign('club_id')->references('id')->on('event');
 

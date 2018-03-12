@@ -10,6 +10,7 @@ class CreateMemberTable extends Migration
     {
         Schema::create('member', function(Blueprint $table) {
             $table->increments('id');
+            $table->timestamps();
             $table->string('name', 50);
             $table->string('surname', 50);
             $table->date('date_of_join');

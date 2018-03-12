@@ -100,4 +100,6 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
+app('translator')->setLocale('pl');
+
 return $app;

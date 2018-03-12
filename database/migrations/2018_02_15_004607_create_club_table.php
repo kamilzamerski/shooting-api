@@ -10,9 +10,9 @@ class CreateClubTable extends Migration
     {
         Schema::create('club', function(Blueprint $table) {
             $table->increments('id');
+            $table->timestamps();
             $table->string('name', 100);
             $table->string('license_no', 30);
-            $table->timestamps();
             $table->unique('license_no');
         });
     }
