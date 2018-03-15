@@ -8,17 +8,13 @@ class EventModel extends Model
 {
     protected $table = 'event';
 
-    protected $fillable = ['name', 'date', 'club_id'];
+    protected $fillable = ['name', 'date'];
 
     public static $rules = [
         'name' => 'required|max:255',
-        'date' => 'required|date|date_format:Y-m-d',
-        'club_id' => 'required|integer'
+        'date' => 'required|date|date_format:Y-m-d'
     ];
 
-    public function club()
-    {
-        return $this->hasOne('App\Models\ClubModel', 'club_id');
-    }
+
 
 }
