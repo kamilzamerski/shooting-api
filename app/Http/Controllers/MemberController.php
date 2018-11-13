@@ -14,8 +14,12 @@ class MemberController extends Controller
 
     public function all(Request $request)
     {
-        $count = MemberModel::count();
-        return response()->json(['status' => true, 'data' => MemberModel::all(), 'count' => $count]);
+        $params = $request->query();
+        //$page = !empty($params['page']) ? $params['page'] : 1;
+        $size = !empty($params['size']) ? $params['size'] : 25;
+        $data = MemberModel::paginate($size);
+
+        return response()->json(['status' => true, 'data' => $data]);
     }
 
     /**
