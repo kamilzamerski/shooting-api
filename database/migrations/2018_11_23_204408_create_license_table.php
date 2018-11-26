@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Weapon extends Migration
+class CreateLicenseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class Weapon extends Migration
      */
     public function up()
     {
-        Schema::create('weapon', function(Blueprint $table) {
+        Schema::create('license', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('name', 100);
-            $table->string('serial', 30)->unique();
-            $table->integer('type');
-            $table->integer('ammo_type');
-            $table->date('registration')->nullable();
-            $table->date('deregistration')->nullable();
+            $table->integer('shooter_id')->unsigned();
+            $table->integer('year')->unsigned();
+            $table->string('number', 20);
+            $table->foreign('shooter_id')->references('id')->on('shooter');
         });
     }
 
@@ -32,6 +30,6 @@ class Weapon extends Migration
      */
     public function down()
     {
-        Schema::drop('weapon');
+        Schema::dropIfExists('license');
     }
 }

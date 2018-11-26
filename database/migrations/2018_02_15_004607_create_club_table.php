@@ -12,13 +12,11 @@ class CreateClubTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('name', 100);
-            $table->string('license_no', 30);
-            $table->unique('license_no');
         });
     }
 
     public function down()
     {
-        Schema::drop('club');
+        Schema::dropIfExists('club');
     }
 }

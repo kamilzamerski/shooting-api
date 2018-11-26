@@ -7,11 +7,16 @@ use App\Models\ShooterModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class MemberController extends Controller
 {
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function all(Request $request)
     {
         $params = $request->query();
@@ -44,17 +49,30 @@ class MemberController extends Controller
     }
 
     /**
-     *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function add(Request $request)
     {
         $this->validate($request, MemberModel::$rules);
-        $member = MemberModel::create($request->all());
+        DB::beginTransaction();
+        try {
+            $shooter = ShooterModel::create($request->post('name'), $request->post('surname'), 1);
+            $member = MemberModel::create($request->all(), $shooter->id);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
         return response()->json(['status' => true, 'data' => $member], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function put(Request $request, $id)
     {
         //Validation
@@ -73,6 +91,10 @@ class MemberController extends Controller
         return response()->json(['status' => false, 'msg' => 'Member not found'], 404);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function remove($id)
     {
         //Validation

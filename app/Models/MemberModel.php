@@ -40,4 +40,30 @@ class MemberModel extends Model
         'active_to' => 'nullable|date|dateFormat:Y-m-d',
     ];
 
+    public function shooter()
+    {
+        return $this->hasOne('App\Models\ShooterModel', 'shooter_id');
+    }
+
+    public static function create(array $request, int $shooter_id)
+    {
+        $objModel = new static();
+        $objModel->name = $request['name'];
+        $objModel->surname = $request['surname'];
+        $objModel->date_of_join = $request['date_of_join'];
+        $objModel->pesel = $request['pesel'];
+        $objModel->address_street = $request['address_street'];
+        $objModel->address_street_no = $request['address_street_no'];
+        $objModel->address_apartment_no = $request['address_apartment_no'];
+        $objModel->post_code = $request['post_code'];
+        $objModel->city = $request['city'];
+        $objModel->shooting_license = $request['shooting_license'];
+        $objModel->email = $request['email'];
+        $objModel->phone = $request['phone'];
+        $objModel->active_to = $request['active_to'] ? $request['active_to'] : null;
+        $objModel->shooter_id = $shooter_id;
+        $objModel->save();
+        return $objModel;
+    }
+
 }
