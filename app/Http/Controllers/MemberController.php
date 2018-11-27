@@ -82,7 +82,7 @@ class MemberController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $this->validate($request, ShooterModel::$rules);
+        $this->validate($request, MemberModel::$rules);
         $member = MemberModel::find($id);
         if ($member) {
             $member->fill($request->all())->save();

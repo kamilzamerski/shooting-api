@@ -17,7 +17,11 @@ class ClubController extends Controller
      */
     public function all(Request $request)
     {
-        return response()->json(['status' => true, 'data' => ClubModel::all()]);
+        //$page = !empty($params['page']) ? $params['page'] : 1;
+        $size = !empty($params['size']) ? $params['size'] : 25;
+        $data = ClubModel::paginate($size);
+
+        return response()->json(['status' => true, 'data' => $data]);
     }
 
     /**
@@ -65,7 +69,7 @@ class ClubController extends Controller
         $this->validate($request, ClubModel::$rules);
         $club = ClubModel::find($id);
         if ($club) {
-            $club->fill($request->all());
+            $club->fill($request->all())->save();
             return response()->json(['status' => true, 'data' => $club]);
         }
         return response()->json(['status' => false, 'msg' => 'Club not found'], 404);

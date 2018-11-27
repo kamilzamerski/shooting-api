@@ -23,7 +23,7 @@ class ShooterModel extends Model
 
     public function club()
     {
-        return $this->hasOne('App\Models\ClubModel', 'club_id');
+        return $this->hasOne('App\Models\ClubModel', 'id', 'club_id');
     }
 
     public static function create($name, $surname, $club_id)

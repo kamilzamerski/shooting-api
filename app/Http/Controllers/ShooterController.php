@@ -17,7 +17,12 @@ class ShooterController extends Controller
      */
     public function all(Request $request)
     {
-        return response()->json(['status' => true, 'data' => ShooterModel::all()]);
+        $params = $request->query();
+        //$page = !empty($params['page']) ? $params['page'] : 1;
+        $size = !empty($params['size']) ? $params['size'] : 25;
+        $data = ShooterModel::with('club:id,name')->paginate($size);
+
+        return response()->json(['status' => true, 'data' => $data]);
     }
 
     /**
