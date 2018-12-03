@@ -20,7 +20,9 @@ class ShooterController extends Controller
         $params = $request->query();
         //$page = !empty($params['page']) ? $params['page'] : 1;
         $size = !empty($params['size']) ? $params['size'] : 25;
-        $data = ShooterModel::with('club:id,name')->paginate($size);
+        $data = ShooterModel::with(['club:id,name', 'licenses' => function($query) {
+            $query->orderBy('year', 'desc')->limit(1);
+        }])->paginate($size);
 
         return response()->json(['status' => true, 'data' => $data]);
     }
