@@ -11,9 +11,9 @@ class SettlementsModel extends Model
     protected $fillable = ['member_id', 'description', 'amount', 'year'];
 
     public static $rules = [
-        'member_id' => 'required|integer',
+        'member_id' => 'integer',
         'year' => 'integer',
-        'amount' => 'float'
+        'amount' => 'numeric'
     ];
 
     public function member()
