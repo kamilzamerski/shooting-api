@@ -44,9 +44,9 @@ class MemberController extends Controller
     }
 
     /**
-     *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function add(Request $request)
     {

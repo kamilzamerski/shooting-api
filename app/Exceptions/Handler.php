@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -24,12 +25,8 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Report or log an exception.
-     *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Exception  $e
-     * @return void
+     * @param Exception $e
+     * @throws Exception
      */
     public function report(Exception $e)
     {
@@ -45,6 +42,25 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        if ($e instanceof ModelNotFoundException)
+        {
+            $errorMsg = "Model not found";
+            $errorCode = Response::HTTP_NOT_FOUND;
+        }
+        elseif ($e instanceof AuthorizationException)
+        {
+            $errorMsg = "Authorization error";
+            $errorCode = Response::HTTP_UNAUTHORIZED;
+        }
+        elseif ($e instanceof ValidationException)
+        {
+            $errorMsg = "Validation error";
+            $errorCode = Response::HTTP_UNPROCESSABLE_ENTITY;
+        }
+        else {
+            $errorMsg = "Internal server error";
+            $errorCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+        }
+        return response()->json(['status' => false, 'msg' => $errorMsg], $errorCode);
     }
 }
