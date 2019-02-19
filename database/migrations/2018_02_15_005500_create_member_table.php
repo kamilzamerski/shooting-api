@@ -23,13 +23,16 @@ class CreateMemberTable extends Migration
             $table->string('shooting_license', 20);
             $table->string('email', 50);
             $table->string('phone', 50);
-            $table->date('active_to');
+            $table->date('active_to')->nullable();
+            $table->integer('shooter_id')->unsigned();
+
+            $table->foreign('shooter_id')->references('id')->on('shooter');
 
         });
     }
 
     public function down()
     {
-        Schema::drop('member');
+        Schema::dropIfExists('member');
     }
 }

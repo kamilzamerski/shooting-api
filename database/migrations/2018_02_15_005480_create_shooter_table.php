@@ -12,18 +12,16 @@ class CreateShooterTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('name', 50);
+            $table->string('surname', 50);
             $table->integer('club_id')->nullable()->unsigned();
-            $table->string('license_no', 30)->nullable()->unique();
-            $table->integer('member_id')->nullable()->unsigned();
 
             $table->foreign('club_id')->references('id')->on('club');
-            $table->foreign('member_id')->references('id')->on('member');
 
         });
     }
 
     public function down()
     {
-        Schema::drop('shooter');
+        Schema::dropIfExists('shooter');
     }
 }

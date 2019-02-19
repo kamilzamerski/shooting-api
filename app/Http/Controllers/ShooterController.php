@@ -11,9 +11,20 @@ use Illuminate\Support\Facades\Validator;
 class ShooterController extends Controller
 {
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function all(Request $request)
     {
-        return response()->json(['status' => true, 'data' => ShooterModel::all()]);
+        $params = $request->query();
+        //$page = !empty($params['page']) ? $params['page'] : 1;
+        $size = !empty($params['size']) ? $params['size'] : 25;
+        $data = ShooterModel::with(['club:id,name', 'licenses' => function($query) {
+            $query->orderBy('year', 'desc')->limit(1);
+        }])->paginate($size);
+
+        return response()->json(['status' => true, 'data' => $data]);
     }
 
     /**
@@ -38,17 +49,23 @@ class ShooterController extends Controller
     }
 
     /**
-     *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function add(Request $request)
     {
         $this->validate($request, ShooterModel::$rules);
-        $shooter = ShooterModel::create($request->all());
+        $shooter = ShooterModel::create($request->post('name'), $request->post('surname'), $request->post('club_id'));
         return response()->json(['status' => true, 'data' => $shooter], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function put(Request $request, $id)
     {
         //Validation
@@ -67,6 +84,10 @@ class ShooterController extends Controller
         return response()->json(['status' => false, 'msg' => 'Shooter not found'], 404);
     }
 
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
     public function remove($id)
     {
         //Validation

@@ -63,4 +63,24 @@ $router->group(['middleware' => 'cors.options'], function () use ($router) {
     $router->post('member', 'MemberController@add');
     $router->put('member/{id}', 'MemberController@put');
     $router->delete('member/{id}', 'MemberController@remove');
+
+    /**
+     * Routes for resource license
+     */
+    $router->get('license/{shooter}', 'LicenseController@all');
+    $router->get('license/{shooter}/{id}', 'LicenseController@get');
+    $router->post('license/{shooter}', 'LicenseController@add');
+    $router->put('license/{shooter}/{id}', 'LicenseController@put');
+    $router->delete('license/{shooter}/{id}', 'LicenseController@remove');
+
+
+    /**
+     * Routes for resource settlements
+     */
+    $router->get('settlement', 'SettlementsController@all');
+    $router->get('settlement/{member}', 'SettlementsController@all');
+    $router->get('settlement/{member}/{id}', 'SettlementsController@get');
+    $router->post('settlement/{member}', 'SettlementsController@add');
+    $router->put('settlement/{member}/{id}', 'SettlementsController@put');
+    $router->delete('settlement/{member}/{id}', 'SettlementsController@remove');
 });

@@ -27,6 +27,6 @@ class CreateResultTable extends Migration
 
     public function down()
     {
-        Schema::drop('result');
+        Schema::dropIfExists('result');
     }
 }
